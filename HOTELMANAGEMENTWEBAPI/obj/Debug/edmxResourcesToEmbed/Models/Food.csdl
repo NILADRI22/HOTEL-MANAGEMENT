@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FoodModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Food">
+    <Key>
+      <PropertyRef Name="FoodId" />
+    </Key>
+    <Property Name="FoodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Dishes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Price" Type="Int32" />
+    <NavigationProperty Name="FoodStatus" Relationship="FoodModel.FK_FoodStatus_Foods1" FromRole="Food" ToRole="FoodStatu" />
+  </EntityType>
+  <EntityContainer Name="HotelEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Foods" EntityType="Self.Food" />
+    <EntitySet Name="FoodStatus" EntityType="FoodModel.FoodStatu" />
+    <AssociationSet Name="FK_FoodStatus_Foods1" Association="FoodModel.FK_FoodStatus_Foods1">
+      <End Role="Food" EntitySet="Foods" />
+      <End Role="FoodStatu" EntitySet="FoodStatus" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="FoodStatu">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FoodID" Type="Int32" />
+    <Property Name="QuanOr" Type="Int32" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Food" Relationship="FoodModel.FK_FoodStatus_Foods1" FromRole="FoodStatu" ToRole="Food" />
+  </EntityType>
+  <Association Name="FK_FoodStatus_Foods1">
+    <End Type="FoodModel.Food" Role="Food" Multiplicity="0..1" />
+    <End Type="FoodModel.FoodStatu" Role="FoodStatu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Food">
+        <PropertyRef Name="FoodId" />
+      </Principal>
+      <Dependent Role="FoodStatu">
+        <PropertyRef Name="FoodID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
